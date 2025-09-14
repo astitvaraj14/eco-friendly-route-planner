@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <title>Eco-Friendly Route Planner</title>
+</head>
+<body>
+  <div class="main-container d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar" id="side_nav">
+      <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+        <h1 class="fs-4"><span class="text-white">Eco-Friendly Route Planner</span></h1>
+        <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fa-solid fa-bars-staggered"></i></button>
+      </div>
+      <ul class="list-unstyled px-2">
+        <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block" id="menu-home"><i class="fa fa-house me-2"></i>Home</a></li>
+        <li><a href="#" class="text-decoration-none px-3 py-2 d-block" id="menu-route"><i class="fa-solid fa-route me-2"></i>Route Finder</a></li>
+        <li><a href="traffic.html" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-list me-2"></i>Traffic Locator</a></li>
+        <li><a href="weather.html" class="text-decoration-none px-3 py-2 d-block"><i class="fa-regular fa-message me-2"></i>Weather Updates</a></li>
+      </ul>
+      <hr class="hrcolor mx-2">
+      <ul class="list-unstyled px-2">
+        <li><a href="pollution.html" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-bell me-2"></i>Pollution Exposure Level</a></li>
+        <li><a href="login.html" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-user me-2"></i>Admin</a></li>
+        <li><a href="#" class="text-decoration-none px-3 py-2 d-block logout-link mb-2"><i class="fa fa-sign-out me-2"></i>Logout</a></li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="content flex-fill">
+      <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="d-flex justify-content-between d-md-none d-block">
+            <button class="btn px-1 py-0 open-btn me-2"><i class="fa fa-bars-staggered"></i></button>
+            <a class="navbar-brand fs-4" href="#"><span class="bg-dark rounded px-2 py-0 text-white">CL</span></a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="row no-gutters equal-height-row px-2">
+          <!-- Weather Box -->
+          <div class="col-12 col-md-3 info-column mx-2 my-3">
+            <div class="info-box1">
+              <h5 class="city-heading">Bangalore</h5>
+              <div class="weather-details">
+                <div class="left-col">
+                  <h6 class="font-weight-bold">Now</h6>
+                  <p class="current-temp" id="temp">--&deg;</p>
+                  <p id="feelsLike">Feels Like: --&deg;</p>
+                </div>
+                <div class="right-col">
+                  <p id="description"></p>
+                  <p><strong>Humidity:</strong> <span id="humidity">--</span>%</p>
+                  <p><strong>Wind:</strong> <span id="wind">--</span> kph</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Route Finder Box (hidden until menu clicked) -->
+            <div class="info-box" id="routeBox" style="display:none;">
+              <h4 class="info-heading">Route Finder</h4>
+              <form id="routeForm">
+                <div class="mb-3">
+                  <label for="startDestination" class="form-label">Start Destination</label>
+                  <input type="text" class="form-control" id="startDestination" placeholder="Enter start destination">
+                </div>
+                <div class="mb-3">
+                  <label for="endDestination" class="form-label">End Destination</label>
+                  <input type="text" class="form-control" id="endDestination" placeholder="Enter end destination">
+                </div>
+                <button type="submit" class="btn btn-primary">Find Route</button>
+              </form>
+              <div class="mt-3">
+                <h6>Distance: <span id="distance">0 km</span></h6>
+                <h6>Total Cost: <span id="totalCost">₹0.00</span></h6>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map -->
+          <div class="col-12 col-md-9 map-column mx-2 my-3">
+            <h4 class="map-heading">Map</h4>
+            <div id="map" style="height: 550px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <script>
+    // Show Route Finder when clicking menu
+    document.getElementById("menu-route").addEventListener("click", function(e) {
+      e.preventDefault();
+      document.getElementById("routeBox").style.display = "block";
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

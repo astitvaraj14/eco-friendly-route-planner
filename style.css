@@ -1,0 +1,298 @@
+body {
+    background-color: #eee;
+    /* overflow-y: hidden; */
+}
+                                  /* side nav bar */
+#side_nav {
+    background: #164331;
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.3s;
+}
+.content {
+    min-height: 100vh;
+    width: 100%;
+}
+
+.hrcolor {
+    border: 1px solid white;
+}
+
+.sidebar li.active {
+    background: #eee;
+    border-radius: 8px;
+}
+
+.sidebar li.active a, .sidebar li.active a:hover {
+    color: #000;
+}
+
+.sidebar li a {
+    color: white;
+}
+.sidebar .dropdown-menu {
+    background: #000;
+    border: none;
+    padding: 0;
+}
+
+.sidebar ul li a:hover {
+    background-color: white;
+    border-radius: 8px;
+    color: #000;
+}
+.sidebar .dropdown-menu > .dropdown-item:hover {
+    background-color: #444;
+    color: white;
+}
+.sidebar .dropdown-submenu .dropdown-menu {
+    background: #111;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-left: 0.5rem;
+    display: none;
+}
+.sidebar .dropdown-submenu:hover .dropdown-menu {
+    display: block;
+}
+.sidebar .dropdown-submenu .dropdown-menu .dropdown-item {
+    color: white;
+    padding: 0.5rem 1rem;
+}
+.sidebar .dropdown-submenu .dropdown-menu .dropdown-item:hover {
+    background-color: #444;
+    color: white;
+}
+.sidebar .dropdown-submenu .dropdown-menu .dropdown-item.active {
+    background-color: #333;
+    color: white;
+}
+@media (max-width: 767px) {
+    #side_nav {
+        margin-left: -250px;
+        position: fixed;
+        min-height: 100vh;
+        z-index: 1;
+    }
+    #side_nav.active {
+        margin-left: 0;
+    }
+}
+.sidebar .logout-link {
+    border-top: 1px solid white; 
+    margin-top: auto; 
+}
+.sidebar .logout-link:hover {
+    background-color: #eee; 
+    color: #000; 
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+@media (max-width: 767px) {
+    .sidebar .logout-link {
+        margin-bottom: 1rem; 
+    }
+}
+.content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+.sidebar-column {
+    flex: 0 0 250px; /* Width similar to the sidebar */
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for separation */
+    height: 100%; /* Match sidebar height */
+}
+
+
+                                       /* map */
+.map-column {
+    flex: 1; /* Takes the remaining space */
+    background-color: #fff; /* Background color for the map area */
+    padding: 20px;
+    overflow: hidden; /* Prevent content overflow */
+    height: 100%; /* Match sidebar height */
+}
+
+/* Ensure the map fills the container */
+#map {
+    height: 100%;
+    width: 590%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .content-container {
+        flex-direction: column; /* Stack columns vertically on smaller screens */
+    }
+
+    .sidebar-column, .map-column {
+        width: 100%; /* Full width on small screens */
+    }
+}
+/* Ensure full height for container and row */
+.container-fluid {
+    height: 88%;
+}
+
+.row {
+    height: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Sidebar styling */
+#side_nav {
+    background: #164331;
+    min-width: 250px;
+    max-width: 250px;
+    z-index: 1000; /* Ensure it is above the map */
+}
+
+/* Column styles */
+.info-column, .map-column {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+/* Define responsive column gap */
+:root {
+    --column-gap: 15px; /* Default gap size */
+}
+
+@media (max-width: 767px) {
+    :root {
+        --column-gap: 10px; /* Smaller gap for smaller screens */
+    }
+}
+
+/* Column specific styling */
+.info-column {
+    background-color: #f8f9fa;
+    margin-left: var(--column-gap); /* Responsive margin-left */
+    margin-right: var(--column-gap); /* Ensure same margin-right as map-column */
+}
+
+.map-column {
+    background-color: #fff;
+    margin-right: var(--column-gap); /* Responsive margin-right */
+    margin-left: var(--column-gap); /* Ensure same margin-left as info-column */
+    z-index: 500; /* Lower z-index to ensure it is behind the sidebar */
+}
+
+/* Box styling */
+.info-box {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 5%; /* 5% gap between boxes */
+    box-sizing: border-box; /* Ensure padding and border are included in the width/height */
+}
+
+/* Heading styles */
+.info-heading, .info-subheading, .map-heading {
+    margin-bottom: 10px;
+}
+
+/* Responsive margin between boxes */
+@media (max-width: 767px) {
+    .info-box {
+        padding: 10px;
+        margin-bottom: 10%; /* Adjust margin for small screens */
+    }
+    .info-heading, .info-subheading, .map-heading {
+        margin-bottom: 8px;
+    }
+}
+
+/* Ensure the map takes full height and width */
+#map {
+    width: 100%; /* Full width of the container */
+    height: calc(100% - 40px); /* Full height minus heading and padding */
+    border-radius: 8px; /* Optional: rounded corners */
+}
+
+/* Custom bottom margin class */
+.mb-custom-bottom {
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+/* Ensure map is behind the sidebar */
+@media (max-width: 767px) {
+    #map {
+        position: relative;
+        z-index: 500; /* Ensure map is behind the sidebar */
+    }
+}
+
+
+
+
+
+
+
+
+                                            /* weather pop up box */
+.info-box1 {
+    background-color: white; /* Blue background for the weather updates */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 5%; /* 5% gap between boxes */
+    box-sizing: border-box; /* Ensure padding and border are included in the width/height */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Allow height to adjust based on content */
+}
+
+/* Weather Details */
+.weather-details {
+    display: flex;
+    flex-wrap: wrap; /* Ensure responsiveness */
+    justify-content: space-between; /* Align items to left and right */
+    color: black; /* Text color */
+}
+
+.weather-details .left-col,
+.weather-details .right-col {
+    flex: 1;
+    margin-right: 10px;
+}
+.city-heading{
+    color: black;
+}
+.weather-details .right-col {
+    text-align: right; /* Align text to the right */
+    margin-left: 10px;
+}
+
+.weather-details .current-temp {
+    font-size: 2rem; /* Larger size for current temperature */
+    font-weight: bold;
+}
+
+.weather-details p {
+    margin-bottom: 0; /* Remove bottom margin for paragraphs */
+}
+/* @media (max-width: 576px) {
+    .popup {
+        width: 90%;
+        right: 5%;
+        top: 10%;
+    }
+} */

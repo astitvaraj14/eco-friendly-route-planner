@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Pop-up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            right: 5%;
+            width: 100%;
+            max-width: 300px; /* Set a max-width to maintain responsiveness */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .popup-close {
+            cursor: pointer;
+            color: #007bff;
+        }
+        .popup-body {
+            display: flex;
+            flex-direction: row;
+            padding: 15px;
+        }
+        .popup-body .left-col {
+            flex: 1;
+            padding-right: 10px;
+        }
+        .popup-body .right-col {
+            flex: 1;
+            padding-left: 10px;
+            text-align: right; /* Align text to the right */
+        }
+        .popup-body .right-col p {
+            margin-bottom: 0;
+        }
+        .current-temp {
+            font-size: 2rem; /* Larger size for current temperature */
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .temperature-info {
+            margin-bottom: 10px;
+        }
+        @media (max-width: 576px) {
+            .popup {
+                width: 90%;
+                right: 5%;
+                top: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-3">
+                <div id="weatherPopup" class="popup bg-light border rounded shadow">
+                    <div class="popup-header bg-primary text-white p-2 rounded-top">
+                        <h5 class="mb-0">Weather</h5>
+                        <span id="popupClose" class="popup-close">Close</span>
+                    </div>
+                    <div class="popup-body d-flex">
+                        <div class="left-col">
+                            <h6 class="font-weight-bold">Now</h6>
+                            <p id="temp" class="current-temp mb-1">0&deg;</p>
+                            <p id="feelsLike" class="mb-1">Feels Like: 0&deg;</p>
+                        </div>
+                        <div class="right-col mt-3">
+                            <p id="description" class="font-weight-bold mb-1"><strong>Weather:</strong> <span>Clear</span></p>
+                            <p><strong>Humidity:</strong> <span id="humidity">0</span>&#37;</p>
+                            <p><strong>Wind:</strong> <span id="wind">0</span> km/h</p>
+                        </div>
+                    </div>
+                    <div class="popup-footer p-2 text-center">
+                        <a href="#" id="knowMoreLink" class="btn btn-link">Know More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const apiKey = '00f9200b705b883cbcc8420f8d8ab749'; // Your API key
+        const city = 'Mumbai';
+        
+        async function fetchWeather() {
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+                const data = await response.json();
+
+                document.getElementById('temp').innerHTML = `${Math.round(data.main.temp)}&deg;`;
+                document.getElementById('feelsLike').innerHTML = `Feels Like: ${Math.round(data.main.feels_like)}&deg;`;
+                document.getElementById('description').innerText = `${data.weather[0].description}`;
+                document.getElementById('humidity').innerHTML = `${data.main.humidity}`;
+                document.getElementById('wind').innerText = `${data.wind.speed}`;
+
+                // Show the popup once the weather data is fetched
+                document.getElementById('weatherPopup').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        }
+
+        document.getElementById('popupClose').addEventListener('click', function() {
+            document.getElementById('weatherPopup').style.display = 'none';
+        });
+
+        // Initial call to fetch weather data
+        fetchWeather();
+
+        // Refresh weather data every 10 minutes
+        setInterval(fetchWeather, 600000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Locator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        * {
+            box-sizing: border-box; /* Ensure padding and borders are included in the element's width/height */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        #map {
+            height: 500px;
+            width: 100%; /* Ensure the map takes the full width */
+        }
+
+        .indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .traffic-indicators {
+            margin-top: 20px;
+        }
+
+        .container-fluid {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
+            max-width: 1200px; /* Set a max-width to prevent it from stretching too much on larger screens */
+        }
+        .left-side {
+            margin-top: 10vh;
+            max-height: 1000vh; /* Adjust this value as needed to increase the height */
+        }
+        .left-side h3 {
+            margin-bottom: 1rem;
+        }
+        .left-side input {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">Traffic Locator</h1>
+        <div class="row">
+            <!-- Left side input section -->
+            <div class="left-side col-md-3 col-12 mb-4">
+                <div class="p-3 border bg-light">
+                    <h3>Enter Locations</h3>
+                    
+                    <label for="start" class="form-label">Enter your start destination:</label>
+                    <input type="text" id="start" class="form-control" placeholder="Enter Start Location" />
+
+                    <label for="end" class="form-label">Enter your end destination:</label>
+                    <input type="text" id="end" class="form-control" placeholder="Enter End Location" />
+
+                    <button id="predictBtn" class="btn btn-success w-100 mt-3">Predict traffic</button>
+                </div>
+            </div>
+
+            <!-- Right side map section -->
+            <div class="right-side col-md-9 col-12">
+                <div id="map"></div>
+                <!-- Traffic Indicators below the map -->
+                <div class="traffic-indicators text-center mt-4">
+                    <div class="indicator" style="background-color: red;"></div> Heavy Traffic
+                    <div class="indicator" style="background-color: yellow;"></div> Moderate Traffic
+                    <div class="indicator" style="background-color: green;"></div> Normal Traffic
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,traffic"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Function to geocode place names using Nominatim
+        function geocodePlace(placeName, callback) {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(placeName)}&format=json&limit=1`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const lat = data[0].lat;
+                        const lon = data[0].lon;
+                        callback([lat, lon]);
+                    } else {
+                        alert('Place not found');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Handle the Predict Button click
+        document.getElementById('predictBtn').addEventListener('click', function() {
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
+
+            if (start && end) {
+                geocodePlace(start, function(startCoords) {
+                    geocodePlace(end, function(endCoords) {
+                        // Now we have the coordinates for start and end
+                        drawRoute(startCoords, endCoords);
+                    });
+                });
+            } else {
+                alert('Please enter both start and end locations');
+            }
+        });
+
+        // Function to draw route and highlight traffic conditions
+        function drawRoute(startCoords, endCoords) {
+            // Example traffic condition logic (you should replace this with actual data)
+            const trafficCondition = Math.random(); // Randomly simulating traffic condition
+            let color;
+            let description;
+
+            if (trafficCondition < 0.33) {
+                color = 'red';
+                description = 'Heavy Traffic';
+            } else if (trafficCondition < 0.66) {
+                color = 'yellow';
+                description = 'Moderate Traffic';
+            } else {
+                color = 'green';
+                description = 'Normal Traffic';
+            }
+
+            // Create a polyline for the route
+            const route = L.polyline([startCoords, endCoords], { color: color, weight: 5 }).addTo(map);
+            map.fitBounds(route.getBounds());
+
+            // Optionally, add a popup with the traffic condition
+            L.popup()
+                .setLatLng(endCoords)
+                .setContent(`Traffic Condition: ${description}`)
+                .openOn(map);
+        }
+    </script>
+    <!-- Bootstrap JS (optional, for responsive functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
